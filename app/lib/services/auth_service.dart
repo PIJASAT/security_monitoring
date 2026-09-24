@@ -11,7 +11,7 @@ class AuthException implements Exception {
 
 class AuthService {
   // Emulator Android: 10.0.2.2 = localhost komputer kamu.
-  static const String baseUrl = 'http://10.0.2.2:8000/api';
+  static const String baseUrl = 'http://10.0.2.2:8000/api/v1';
 
   final Dio _dio = Dio(
     BaseOptions(
