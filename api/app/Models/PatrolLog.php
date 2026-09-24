@@ -10,8 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
-    'session_id', 'checkpoint_id', 'photo_path', 'photo_hash', 'lat', 'lng',
-    'condition', 'note', 'scanned_at', 'validation_status', 'admin_status', 'admin_note',
+    'session_id', 
+    'route_checkpoint_id', 
+    'photo_path',
+    'condition', 
+    'note', 
+    'scanned_at', 
+    'validation_status', 
+    'admin_action', 
+    'admin_note',
 ])]
 class PatrolLog extends Model
 {
@@ -22,13 +29,10 @@ class PatrolLog extends Model
      */
     protected function casts(): array
     {
-        return [
-            'lat' => 'decimal:7',
-            'lng' => 'decimal:7',
-            'scanned_at' => 'datetime',
+        return [    
             'condition' => PatrolLogCondition::class,
             'validation_status' => ValidationStatus::class,
-            'admin_status' => AdminStatus::class,
+            'admin_action' => AdminStatus::class,
         ];
     }
 
@@ -37,8 +41,8 @@ class PatrolLog extends Model
         return $this->belongsTo(PatrolSession::class);
     }
 
-    public function checkpoint(): BelongsTo
+    public function routeCheckPoint(): BelongsTo
     {
-        return $this->belongsTo(Checkpoint::class);
+        return $this->belongsTo(RouteCheckpoint::class);
     }
 }

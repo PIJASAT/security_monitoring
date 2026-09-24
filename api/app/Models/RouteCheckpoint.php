@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['route_id', 'checkpoint_id', 'sequence', 'max_minutes'])]
+#[Fillable(['route_id', 'sequence', 'estimated_minutes'])]
 class RouteCheckpoint extends Model
 {
     /**
@@ -18,7 +18,7 @@ class RouteCheckpoint extends Model
     {
         return [
             'sequence' => 'integer',
-            'max_minutes' => 'integer',
+            'estimated_minutes' => 'integer',
         ];
     }
 
@@ -27,8 +27,8 @@ class RouteCheckpoint extends Model
         return $this->belongsTo(Route::class);
     }
 
-    public function checkpoint(): BelongsTo
+    public function Routecheckpoint(): BelongsTo
     {
-        return $this->belongsTo(Checkpoint::class);
+        return $this->belongsTo(RouteCheckpoint::class);
     }
 }

@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('route_checkpoints', function (Blueprint $table) {
             $table->id();
             $table->foreignId('route_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('checkpoint_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('sequence');
-            $table->unsignedInteger('max_minutes');
+            $table->unsignedInteger('estimated_minutes');
             $table->timestamps();
 
-            $table->unique(['route_id', 'checkpoint_id']);
+            // $table->unique(['route_id', 'route_checkpoint_id']);
             $table->unique(['route_id', 'sequence']);
         });
     }

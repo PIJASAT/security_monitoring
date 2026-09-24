@@ -13,7 +13,7 @@ class PatrolLogController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get all Checkpoints successfully',
+            'message' => 'Get all Patrol Log successfully',
             'data' => $patrollogs
         ]);
     }
@@ -24,13 +24,13 @@ class PatrolLogController extends Controller
         if(!$patrollog) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found',
+                'message' => 'Patrol log not found',
             ], 404);
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get Checkpoint successfully',
+            'message' => 'Get Patrol Log successfully',
             'data' => $patrollog
         ]);
     }
@@ -38,37 +38,31 @@ class PatrolLogController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'session_id' => 'required',
-            'checkpoint_id' => 'required',
+            'route_checkpoint_id' => 'required',
             'photo_path' => 'required',
-            'photo_hash' => 'required',
-            'lat' => 'required',
-            'ling' => 'required',
             'condition' => 'required',
             'note' => 'required',
             'scanned_at' => 'required',
             'validation_status' => 'required',
-            'admin_status' => 'required',
+            'admin_action' => 'required',
             'admin_note' => 'required'
         ]);
 
        PatrolLog::create([
             'session_id' => $validated['session_id'],
-            'checkpoint_id' => $validated['checkpoint_id'],
+            'route_checkpoint_id' => $validated['route_checkpoint_id'],
             'photo_path' => $validated['photo_path'],
-            'photo_hash' => $validated['photo_hash'],
-            'lat' => $validated['lat'],
-            'ling' => $validated['ling'],
             'condition' => $validated['condition'],
             'note' => $validated['note'],
             'scanned_at' => $validated['scanned_at'],
             'validation_status' => $validated['validation_status'],
-            'admin_status' => $validated['admin_status'],
+            'admin_action' => $validated['admin_action'],
             'admin_note' => $validated['admin_note'],
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Added Checkpoint successfully'
+            'message' => 'Added Patrol Log successfully'
         ], 201);
     }
 
@@ -77,14 +71,11 @@ class PatrolLogController extends Controller
             'session_id' => 'required',
             'checkpoint_id' => 'required',
             'photo_path' => 'required',
-            'photo_hash' => 'required',
-            'lat' => 'required',
-            'ling' => 'required',
             'condition' => 'required',
             'note' => 'required',
             'scanned_at' => 'required',
             'validation_status' => 'required',
-            'admin_status' => 'required',
+            'admin_action' => 'required',
             'admin_note' => 'required'
         ]);
 
@@ -101,20 +92,17 @@ class PatrolLogController extends Controller
             'session_id' => $validated['session_id'],
             'checkpoint_id' => $validated['checkpoint_id'],
             'photo_path' => $validated['photo_path'],
-            'photo_hash' => $validated['photo_hash'],
-            'lat' => $validated['lat'],
-            'ling' => $validated['ling'],
             'condition' => $validated['condition'],
             'note' => $validated['note'],
             'scanned_at' => $validated['scanned_at'],
             'validation_status' => $validated['validation_status'],
-            'admin_status' => $validated['admin_status'],
+            'admin_action' => $validated['admin_action'],
             'admin_note' => $validated['admin_note'],
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Updated Checkpoint successfully'
+            'message' => 'Updated Patrol Log successfully'
         ]);
     }
 
@@ -124,7 +112,7 @@ class PatrolLogController extends Controller
         if (!$patrollog) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Patrol Log not found'
             ], 404);
         }
 
@@ -132,7 +120,7 @@ class PatrolLogController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted Checkpoint successfully'
+            'message' => 'Deleted Patrol Log successfully'
         ]);
     }
 }

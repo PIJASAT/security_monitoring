@@ -14,16 +14,13 @@ return new class extends Migration
         Schema::create('patrol_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('session_id')->constrained('patrol_sessions')->cascadeOnDelete();
-            $table->foreignId('checkpoint_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('route_checkpoint_id')->nullable()->constrained()->nullOnDelete();
             $table->string('photo_path');
-            $table->string('photo_hash');
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
             $table->enum('condition', ['ok', 'anomaly'])->default('ok');
             $table->text('note')->nullable();
             $table->timestamp('scanned_at');
             $table->enum('validation_status', ['pending', 'valid', 'invalid'])->default('pending');
-            $table->enum('admin_status', ['pending', 'approved', 'rejected'])->nullable();
+            $table->enum('admin_action', ['pending', 'approved', 'rejected'])->nullable();
             $table->text('admin_note')->nullable();
             $table->timestamps();
         });
