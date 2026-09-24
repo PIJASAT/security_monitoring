@@ -42,6 +42,11 @@ class RouteController extends Controller
             'description' => 'required',
         ]);
 
+        Route::create([
+            'name' => $validated['name'],
+            'description' => $validated['description']
+        ]);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Added route successfully'

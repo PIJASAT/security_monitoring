@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CheckpointController;
 use App\Http\Controllers\Admin\RouteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,4 +24,16 @@ Route::prefix('/v1')->group(function () {
     Route::post('/routes', [RouteController::class, 'store']);
     Route::put('/routes/{id}', [RouteController::class, 'update']);
     Route::delete('/routes/{id}', [RouteController::class, 'destroy']);
+
+    Route::get('/checkpoints', [CheckpointController::class, 'index']);
+    Route::get('/checkpoints/{id}', [CheckpointController::class, 'show']);
+    Route::post('/checkpoints', [CheckpointController::class, 'store']);
+    Route::put('/checkpoints/{id}', [CheckpointController::class, 'update']);
+    Route::delete('/checkpoints/{id}', [CheckpointController::class, 'destroy']);
+
+    Route::get('/checkpoints', [CheckpointController::class, 'index']);
+    Route::get('/checkpoints/{id}', [CheckpointController::class, 'show']);
+    Route::post('/checkpoints', [CheckpointController::class, 'store']);
+    Route::put('/checkpoints/{id}', [CheckpointController::class, 'update']);
+    Route::delete('/checkpoints/{id}', [CheckpointController::class, 'destroy']);
 });
