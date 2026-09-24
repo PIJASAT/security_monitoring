@@ -24,7 +24,7 @@ class ScheduleController extends Controller
         if(!$schedule) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found',
+                'message' => 'Schedule not found',
             ], 404);
         }
 

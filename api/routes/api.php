@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CheckpointController;
+use App\Http\Controllers\Admin\PatrolLogController;
+use App\Http\Controllers\Admin\PatrolSessionController;
+use App\Http\Controllers\Admin\RouteCheckpointController;
 use App\Http\Controllers\Admin\RouteController;
+use App\Http\Controllers\Admin\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,15 +29,27 @@ Route::prefix('/v1')->group(function () {
     Route::put('/routes/{id}', [RouteController::class, 'update']);
     Route::delete('/routes/{id}', [RouteController::class, 'destroy']);
 
-    Route::get('/checkpoints', [CheckpointController::class, 'index']);
-    Route::get('/checkpoints/{id}', [CheckpointController::class, 'show']);
-    Route::post('/checkpoints', [CheckpointController::class, 'store']);
-    Route::put('/checkpoints/{id}', [CheckpointController::class, 'update']);
-    Route::delete('/checkpoints/{id}', [CheckpointController::class, 'destroy']);
+    Route::get('/route-checkpoints', [RouteCheckpointController::class, 'index']);
+    Route::get('/route-checkpoints/{id}', [RouteCheckpointController::class, 'show']);
+    Route::post('/route-checkpoints', [RouteCheckpointController::class, 'store']);
+    Route::put('/route-checkpoints/{id}', [RouteCheckpointController::class, 'update']);
+    Route::delete('/route-checkpoints/{id}', [RouteCheckpointController::class, 'destroy']);
 
-    Route::get('/checkpoints', [CheckpointController::class, 'index']);
-    Route::get('/checkpoints/{id}', [CheckpointController::class, 'show']);
-    Route::post('/checkpoints', [CheckpointController::class, 'store']);
-    Route::put('/checkpoints/{id}', [CheckpointController::class, 'update']);
-    Route::delete('/checkpoints/{id}', [CheckpointController::class, 'destroy']);
+    Route::get('/schedules', [ScheduleController::class, 'index']);
+    Route::get('/schedules/{id}', [ScheduleController::class, 'show']);
+    Route::post('/schedules', [ScheduleController::class, 'store']);
+    Route::put('/schedules/{id}', [ScheduleController::class, 'update']);
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+
+    Route::get('/patrol-sessions', [PatrolSessionController::class, 'index']);
+    Route::get('/patrol-sessions/{id}', [PatrolSessionController::class, 'show']);
+    Route::post('/patrol-sessions', [PatrolSessionController::class, 'store']);
+    Route::put('/patrol-sessions/{id}', [PatrolSessionController::class, 'update']);
+    Route::delete('/patrol-sessions/{id}', [PatrolSessionController::class, 'destroy']);
+
+    Route::get('/patrol-log', [PatrolLogController::class, 'index']);
+    Route::get('/patrol-log/{id}', [PatrolLogController::class, 'show']);
+    Route::post('/patrol-log', [PatrolLogController::class, 'store']);
+    Route::put('/patrol-log/{id}', [PatrolLogController::class, 'update']);
+    Route::delete('/patrol-log/{id}', [PatrolLogController::class, 'destroy']);
 });

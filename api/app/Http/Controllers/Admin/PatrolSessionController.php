@@ -38,8 +38,8 @@ class PatrolSessionController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'schedule_id' => 'required',
-            'started_at' => 'required',
-            'finished_at' => 'required',
+            'started_at' => 'nullable',
+            'finished_at' => 'nullable',
             'status' => 'required',
         ]);
 
@@ -58,10 +58,10 @@ class PatrolSessionController extends Controller
 
     public function update(Request $request, string $id) {
         $validated = $request->validate([
-            'schedule_id' => 'required',
-            'started_at' => 'required',
-            'finished_at' => 'required',
-            'status' => 'required',
+            'schedule_id' => 'nullable',
+            'started_at' => 'nullable',
+            'finished_at' => 'nullable',
+            'status' => 'nullable',
         ]);
 
         $patrolsession =PatrolSession::where('id', $id)->first();

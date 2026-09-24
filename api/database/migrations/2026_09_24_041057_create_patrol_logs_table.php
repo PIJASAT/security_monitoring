@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->timestamp('scanned_at');
             $table->enum('validation_status', ['pending', 'valid', 'invalid'])->default('pending');
-            $table->enum('admin_action', ['pending', 'approved', 'rejected'])->nullable();
+            $table->enum('admin_action', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('admin_note')->nullable();
             $table->timestamps();
         });

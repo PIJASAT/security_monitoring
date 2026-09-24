@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\PatrolLog;
 use Illuminate\Http\Request;
 
+use function Illuminate\Support\now;
+
 class PatrolLogController extends Controller
 {
     public function index() {
@@ -39,25 +41,25 @@ class PatrolLogController extends Controller
         $validated = $request->validate([
             'session_id' => 'required',
             'route_checkpoint_id' => 'required',
-            'photo_path' => 'required',
+            // 'photo_path' => 'required',
+            'image' => 'required|file|image|mimes:png,jpg,jpeg',
             'condition' => 'required',
             'note' => 'required',
-            'scanned_at' => 'required',
-            'validation_status' => 'required',
-            'admin_action' => 'required',
-            'admin_note' => 'required'
+            'admin_note' => 'nullable'
         ]);
+
+        $image = $request->file('image');
+        $generateName = uniqid().'.'.$image->getClientOriginalExtension();
+        $file = $image->storeAs('patrollog', $generateName, 'public');
 
        PatrolLog::create([
             'session_id' => $validated['session_id'],
             'route_checkpoint_id' => $validated['route_checkpoint_id'],
-            'photo_path' => $validated['photo_path'],
+            'photo_path' => $file,
             'condition' => $validated['condition'],
             'note' => $validated['note'],
-            'scanned_at' => $validated['scanned_at'],
-            'validation_status' => $validated['validation_status'],
-            'admin_action' => $validated['admin_action'],
-            'admin_note' => $validated['admin_note'],
+            'scanned_at' => now(),
+            'admin_note' => $validated['admin_note'] ?? "",
         ]);
 
         return response()->json([

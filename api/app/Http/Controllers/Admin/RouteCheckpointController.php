@@ -39,13 +39,13 @@ class RouteCheckpointController extends Controller
         $validated = $request->validate([
             'route_id' => 'required',
             'sequence' => 'required',
-            'max_minutes' => 'required'
+            'estimated_minutes' => 'required'
         ]);
 
         RouteCheckpoint::create([
             'route_id' => $validated['route_id'],
             'sequence' => $validated['sequence'],
-            'max_minutes' => $validated['max_minutes'],
+            'estimated_minutes' => $validated['estimated_minutes'],
         ]);
 
         return response()->json([
@@ -58,7 +58,7 @@ class RouteCheckpointController extends Controller
         $validated = $request->validate([
             'route_id' => 'required',
             'sequence' => 'required',
-            'max_minutes' => 'required'
+            'estimated_minutes' => 'required'
         ]);
 
         $routecheckpoint = RouteCheckpoint::where('id', $id)->first();
@@ -73,7 +73,7 @@ class RouteCheckpointController extends Controller
         $routecheckpoint->update([
             'route_id' => $validated['route_id'],
             'sequence' => $validated['sequence'],
-            'max_minutes' => $validated['max_minutes'],
+            'estimated_minutes' => $validated['estimated_minutes'],
         ]);
 
         return response()->json([
