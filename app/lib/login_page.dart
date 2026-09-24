@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:securityapp/assets/homePage.dart';
-import 'package:securityapp/models/user_role.dart';
-import 'package:securityapp/services/auth_service.dart';
+import 'package:securityapp/auth_service.dart';
+import 'package:securityapp/homePage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,17 +37,21 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await _auth.login(_usernameCtrl.text.trim(), _passwordCtrl.text);
 
-      // Ambil data user yang baru login dari AuthService (versi dummy)
       final user = AuthService.currentUser;
-      if (user == null) throw AuthException('Data user tidak ditemukan');
+      if (user == null) {
+        throw AuthException('Data user tidak ditemukan');
+      }
 
-      final role = user.role == 'admin' ? UserRole.admin : UserRole.security;
+      if (user.role.toLowerCase() != 'security') {
+        await _auth.logout();
+        throw AuthException(
+          'Akses ditolak. Aplikasi ini hanya untuk petugas Security.',
+        );
+      }
 
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => HomePage(name: user.name, role: role),
-        ),
+        MaterialPageRoute(builder: (_) => HomePage(name: user.name)),
       );
     } catch (e) {
       if (!mounted) return;
@@ -78,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const SizedBox(height: 12),
                     Text(
-                      'Login',
+                      'Login Security',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -101,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Password
                     TextFormField(
                       controller: _passwordCtrl,
                       enabled: !_loading,
@@ -126,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                           : null,
                     ),
 
-                    // Pesan error
                     if (_error != null) ...[
                       const SizedBox(height: 16),
                       Container(
@@ -157,7 +157,6 @@ class _LoginPageState extends State<LoginPage> {
 
                     const SizedBox(height: 24),
 
-                    // Tombol masuk
                     SizedBox(
                       height: 52,
                       child: FilledButton(
