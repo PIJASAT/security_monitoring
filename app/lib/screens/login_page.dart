@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../services/auth_service.dart';
+import 'package:securityapp/assets/homePage.dart';
+import 'package:securityapp/models/user_role.dart';
+import 'package:securityapp/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,10 +38,19 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await _auth.login(_usernameCtrl.text.trim(), _passwordCtrl.text);
+
+      // Ambil data user yang baru login dari AuthService (versi dummy)
+      final user = AuthService.currentUser;
+      if (user == null) throw AuthException('Data user tidak ditemukan');
+
+      final role = user.role == 'admin' ? UserRole.admin : UserRole.security;
+
       if (!mounted) return;
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => HomePage(name: user.name, role: role),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() => _error = e.toString());
@@ -172,34 +183,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Placeholder Beranda, ganti dengan halaman asli nanti.
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Beranda'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Keluar',
-            onPressed: () async {
-              await AuthService().logout();
-              if (!context.mounted) return;
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const LoginPage()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: const Center(child: Text('Login berhasil ')),
     );
   }
 }

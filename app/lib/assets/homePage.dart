@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:securityapp/models/login_page.dart';
+import 'package:securityapp/screens/login_page.dart';
+import 'package:securityapp/models/user_role.dart';
 
 class PhotoReport {
   final String checkpoint;
@@ -74,8 +75,6 @@ class _SecurityHomeState extends State<SecurityHome> {
   bool _finding = false;
   bool _sending = false;
 
-  // Kamera hanya tersedia di HP. Di desktop (Windows) foto dipilih dari file
-  // supaya tampilan tetap bisa dites.
   bool get _hasCamera => Platform.isAndroid || Platform.isIOS;
 
   List<PhotoReport> get _mine =>
@@ -122,7 +121,6 @@ class _SecurityHomeState extends State<SecurityHome> {
 
     setState(() => _sending = true);
 
-    // Meniru waktu kirim ke server.
     await Future.delayed(const Duration(milliseconds: 800));
 
     _reports.insert(
@@ -364,25 +362,6 @@ class _SecurityHomeState extends State<SecurityHome> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              SizedBox(
-                height: 52,
-                child: FilledButton.icon(
-                  onPressed: _sending ? null : _submit,
-                  icon: _sending
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2.5),
-                        )
-                      : const Icon(Icons.send),
-                  label: Text(
-                    _sending ? 'Mengirim...' : 'Kirim Dokumentasi',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 28),
 
               // Riwayat kiriman
               Text(

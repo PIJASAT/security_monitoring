@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class AuthException implements Exception {
   final String message;
   AuthException(this.message);
@@ -6,64 +8,72 @@ class AuthException implements Exception {
   String toString() => message;
 }
 
-class DummyUser {
+class UserModel {
   final String username;
-  final String password;
   final String name;
   final String role;
-  final bool active;
 
-  const DummyUser({
+  const UserModel({
     required this.username,
-    required this.password,
     required this.name,
     required this.role,
-    this.active = true,
   });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      username: json['username'] ?? '',
+      name: json['name'] ?? '',
+      role: json['role'] ?? 'security',
+    );
+  }
 }
 
 class AuthService {
-  static const _users = [
-    DummyUser(
-      username: 'admin',
-      password: 'admin123',
-      name: 'Administrator',
-      role: 'admin',
+  // Masukkan Base URL API temen kamu di sini (misal: http://192.168.1.10:8000/api)
+  static const String _baseUrl = 'https://api-temen-lu.com/api';
+
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: _baseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
     ),
-    DummyUser(
-      username: 'security1',
-      password: 'security123',
-      name: 'Budi Santoso',
-      role: 'security',
-    ),
-    DummyUser(
-      username: 'security2',
-      password: 'security123',
-      name: 'Andi Nonaktif',
-      role: 'security',
-      active: false,
-    ),
-  ];
+  );
 
   static String? _token;
-  static DummyUser? currentUser;
+  static UserModel? currentUser;
 
   Future<void> login(String username, String password) async {
-    // Meniru waktu tunggu jaringan
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      final response = await _dio.post(
+        '/login',
+        data: {'username': username, 'password': password},
+      );
 
-    final matches = _users.where((u) => u.username == username);
-    if (matches.isEmpty || matches.first.password != password) {
-      throw AuthException('Username atau password salah');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.data;
+
+        // Sesuaikan key JSON ('token' & 'user') dengan format respon API temen lu
+        _token = data['token'];
+        currentUser = UserModel.fromJson(data['user']);
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        // Mengambil pesan error dari Backend (misal: {"message": "Password salah"})
+        final message = e.response?.data['message'] ?? 'Gagal melakukan login';
+        throw AuthException(message);
+      } else {
+        throw AuthException(
+          'Gagal terhubung ke server. Periksa koneksi internet.',
+        );
+      }
+    } catch (e) {
+      throw AuthException('Terjadi kesalahan yang tidak diketahui');
     }
-
-    final user = matches.first;
-    if (!user.active) {
-      throw AuthException('Akun nonaktif, hubungi admin');
-    }
-
-    currentUser = user;
-    _token = 'dummy-token-${DateTime.now().millisecondsSinceEpoch}';
   }
 
   Future<String?> getToken() async => _token;
