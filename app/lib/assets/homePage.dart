@@ -43,9 +43,6 @@ void _logout(BuildContext context) {
   ).pushReplacement(MaterialPageRoute(builder: (_) => const LoginPage()));
 }
 
-// ---------------------------------------------------------------------------
-// HOMEPAGE: memilih tampilan sesuai role
-// ---------------------------------------------------------------------------
 class HomePage extends StatelessWidget {
   final String name;
   final UserRole role;
