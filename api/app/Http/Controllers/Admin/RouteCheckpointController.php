@@ -13,7 +13,7 @@ class RouteCheckpointController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get all Checkpoints successfully',
+            'message' => 'Get all Route Checkpoints successfully',
             'data' => $routecheckpoints
         ]);
     }
@@ -30,7 +30,7 @@ class RouteCheckpointController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get Checkpoint successfully',
+            'message' => 'Get Route Checkpoint successfully',
             'data' => $routecheckpoint
         ]);
     }
@@ -38,28 +38,25 @@ class RouteCheckpointController extends Controller
     public function store(Request $request) {
         $validated = $request->validate([
             'route_id' => 'required',
-            'checkpoint_id' => 'required',
             'sequence' => 'required',
             'max_minutes' => 'required'
         ]);
 
         RouteCheckpoint::create([
             'route_id' => $validated['route_id'],
-            'checkpoint_id' => $validated['checkpoint_id'],
             'sequence' => $validated['sequence'],
             'max_minutes' => $validated['max_minutes'],
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Added Checkpoint successfully'
+            'message' => 'Added Route Checkpoint successfully'
         ], 201);
     }
 
     public function update(Request $request, string $id) {
         $validated = $request->validate([
             'route_id' => 'required',
-            'checkpoint_id' => 'required',
             'sequence' => 'required',
             'max_minutes' => 'required'
         ]);
@@ -69,20 +66,19 @@ class RouteCheckpointController extends Controller
         if (!$routecheckpoint) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Route Checkpoint not found'
             ], 404);
         }
 
         $routecheckpoint->update([
             'route_id' => $validated['route_id'],
-            'checkpoint_id' => $validated['checkpoint_id'],
             'sequence' => $validated['sequence'],
             'max_minutes' => $validated['max_minutes'],
         ]);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Updated Checkpoint successfully'
+            'message' => 'Updated Route Checkpoint successfully'
         ]);
     }
 
@@ -92,7 +88,7 @@ class RouteCheckpointController extends Controller
         if (!$routecheckpoint) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Route Checkpoint not found'
             ], 404);
         }
 
@@ -100,7 +96,7 @@ class RouteCheckpointController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted Checkpoint successfully'
+            'message' => 'Deleted Route Checkpoint successfully'
         ]);
     }
 }

@@ -13,7 +13,7 @@ class ScheduleController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get all Checkpoints successfully',
+            'message' => 'Get all Schedules successfully',
             'data' => $schedules
         ]);
     }
@@ -30,7 +30,7 @@ class ScheduleController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get Checkpoint successfully',
+            'message' => 'Get Schedule successfully',
             'data' => $schedule
         ]);
     }
@@ -54,7 +54,7 @@ class ScheduleController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Added Checkpoint successfully'
+            'message' => 'Added Schedule successfully'
         ], 201);
     }
 
@@ -72,7 +72,7 @@ class ScheduleController extends Controller
         if (!$schedule) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Schedule not found'
             ], 404);
         }
 
@@ -86,7 +86,7 @@ class ScheduleController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Updated Checkpoint successfully'
+            'message' => 'Updated Schedule successfully'
         ]);
     }
 
@@ -96,7 +96,7 @@ class ScheduleController extends Controller
         if (!$schedule) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Schedule not found'
             ], 404);
         }
 
@@ -104,7 +104,7 @@ class ScheduleController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted Checkpoint successfully'
+            'message' => 'Deleted Schedule successfully'
         ]);
     }
 }

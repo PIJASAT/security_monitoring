@@ -13,7 +13,7 @@ class PatrolSessionController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get all Checkpoints successfully',
+            'message' => 'Get all Patrol Session successfully',
             'data' => $patrolsessions
         ]);
     }
@@ -24,13 +24,13 @@ class PatrolSessionController extends Controller
         if(!$patrolsession) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found',
+                'message' => 'Patrol Session not found',
             ], 404);
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Get Checkpoint successfully',
+            'message' => 'Get Patrol Session successfully',
             'data' => $patrolsession
         ]);
     }
@@ -52,7 +52,7 @@ class PatrolSessionController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Added Checkpoint successfully'
+            'message' => 'Added Patrol Session successfully'
         ], 201);
     }
 
@@ -69,7 +69,7 @@ class PatrolSessionController extends Controller
         if (!$patrolsession) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Patrol Session not found'
             ], 404);
         }
 
@@ -82,7 +82,7 @@ class PatrolSessionController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Updated Checkpoint successfully'
+            'message' => 'Updated Patrol Session successfully'
         ]);
     }
 
@@ -92,7 +92,7 @@ class PatrolSessionController extends Controller
         if (!$patrolsession) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Checkpoint not found'
+                'message' => 'Patrol Session not found'
             ], 404);
         }
 
@@ -100,7 +100,7 @@ class PatrolSessionController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted Checkpoint successfully'
+            'message' => 'Deleted Patrol Session successfully'
         ]);
     }
 }
