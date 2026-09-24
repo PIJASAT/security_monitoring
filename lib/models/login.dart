@@ -65,34 +65,22 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
-                      Icons.shield_outlined,
-                      size: 72,
-                      color: theme.colorScheme.primary,
-                    ),
                     const SizedBox(height: 12),
                     Text(
-                      'Patroli Security',
+                      'Login',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Masuk untuk memulai tugas',
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium,
-                    ),
                     const SizedBox(height: 32),
 
-                    // Username / NIK
                     TextFormField(
                       controller: _usernameCtrl,
                       enabled: !_loading,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
-                        labelText: 'Username / NIK',
+                        labelText: 'Username',
                         prefixIcon: Icon(Icons.person_outline),
                         border: OutlineInputBorder(),
                       ),
