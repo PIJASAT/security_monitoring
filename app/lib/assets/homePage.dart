@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
-import 'package:securityapp/models/login.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:securityapp/models/login_page.dart';
 
 class PhotoReport {
   final String checkpoint;

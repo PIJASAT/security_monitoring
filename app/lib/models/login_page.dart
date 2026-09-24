@@ -199,7 +199,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('Login berhasil 🎉')),
+      body: const Center(child: Text('Login berhasil ')),
     );
   }
 }

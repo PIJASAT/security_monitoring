@@ -1,6 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 class AuthException implements Exception {
   final String message;
   AuthException(this.message);
@@ -9,68 +6,70 @@ class AuthException implements Exception {
   String toString() => message;
 }
 
+class DummyUser {
+  final String username;
+  final String password;
+  final String name;
+  final String role;
+  final bool active;
+
+  const DummyUser({
+    required this.username,
+    required this.password,
+    required this.name,
+    required this.role,
+    this.active = true,
+  });
+}
+
 class AuthService {
-  // Emulator Android: 10.0.2.2 = localhost komputer kamu.
-  static const String baseUrl = 'http://10.0.2.2:8000/api/v1';
-
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-      headers: {'Accept': 'application/json'},
+  static const _users = [
+    DummyUser(
+      username: 'admin',
+      password: 'admin123',
+      name: 'Administrator',
+      role: 'admin',
     ),
-  );
+    DummyUser(
+      username: 'security1',
+      password: 'security123',
+      name: 'Budi Santoso',
+      role: 'security',
+    ),
+    DummyUser(
+      username: 'security2',
+      password: 'security123',
+      name: 'Andi Nonaktif',
+      role: 'security',
+      active: false,
+    ),
+  ];
 
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  static String? _token;
+  static DummyUser? currentUser;
 
   Future<void> login(String username, String password) async {
-    try {
-      final res = await _dio.post(
-        '/login',
-        data: {'username': username, 'password': password},
-      );
+    // Meniru waktu tunggu jaringan
+    await Future.delayed(const Duration(seconds: 1));
 
-      final token = res.data['token'] as String?;
-      if (token == null) throw AuthException('Respons server tidak valid');
-
-      await _storage.write(key: 'token', value: token);
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionError ||
-          e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout) {
-        throw AuthException('Tidak ada koneksi ke server');
-      }
-
-      final status = e.response?.statusCode;
-      final data = e.response?.data;
-      final serverMsg = data is Map ? data['message'] as String? : null;
-
-      if (status == 401 || status == 422) {
-        throw AuthException(serverMsg ?? 'Username atau password salah');
-      }
-      if (status == 403) {
-        throw AuthException(serverMsg ?? 'Akun nonaktif atau tidak diizinkan');
-      }
-      throw AuthException('Terjadi kesalahan, coba lagi');
+    final matches = _users.where((u) => u.username == username);
+    if (matches.isEmpty || matches.first.password != password) {
+      throw AuthException('Username atau password salah');
     }
+
+    final user = matches.first;
+    if (!user.active) {
+      throw AuthException('Akun nonaktif, hubungi admin');
+    }
+
+    currentUser = user;
+    _token = 'dummy-token-${DateTime.now().millisecondsSinceEpoch}';
   }
 
-  Future<String?> getToken() => _storage.read(key: 'token');
+  Future<String?> getToken() async => _token;
 
   Future<void> logout() async {
-    try {
-      final token = await getToken();
-      if (token != null) {
-        await _dio.post(
-          '/logout',
-          options: Options(headers: {'Authorization': 'Bearer $token'}),
-        );
-      }
-    } catch (_) {
-      // Abaikan error jaringan, token lokal tetap dihapus.
-    } finally {
-      await _storage.delete(key: 'token');
-    }
+    _token = null;
+    currentUser = null;
   }
 }
